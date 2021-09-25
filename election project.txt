@@ -1,8 +1,8 @@
 #include<stdio.h>
 #define CANDIDATE_COUNT
-#define CANDIDATE1 "ABC"
-#define CANDIDATE2 "XYZ"
-#define CANDIDATE3 "PQR"
+#define CANDIDATE1 "Candidate 1"
+#define CANDIDATE2 "Candidate 2"
+#define CANDIDATE3 "Candidate 3"
 int votescount1=0, votescount2=0, votescount3=0;
 void castvote(){
    int choice;
