@@ -33,7 +33,7 @@ int main(){
    int i;
    int choice;
    do{
-      printf("\n\n ###### Welcome to Election/Voting 2019 #####");
+      printf("\n\n ###### Welcome to Election/Voting 2021 #####");
       printf("\n\n 1. Cast the Vote");
       printf("\n 2. Find Vote Count");
       printf("\n 0. Exit");
