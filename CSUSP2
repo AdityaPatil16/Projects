@@ -1,0 +1,379 @@
+#CropInfo
+
+package myproject;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
+
+import javax.imageio.ImageIO;
+public class CropInfo extends Frame implements ActionListener
+{
+
+	public static CropInfo cr;
+	public static Label lblCrop;
+	public static Label lblS1;
+	public static Label lblS2;
+	public static Label lblS3;
+	public static Label lblN1;
+	public static Label lblN2;
+	public static TextField txtCrop;
+	public static Label lblSlope;
+	public static TextField txtss1;
+	public static TextField txtss2;
+	public static TextField txtss3;
+	public static TextField txtsn1;
+	public static TextField txtsn2;
+	
+	public static Label lblFlood;
+	public static TextField txtfs1;
+	public static TextField txtfs2;
+	public static TextField txtfs3;
+	public static TextField txtfn1;
+	public static TextField txtfn2;
+	
+	public static Label lblDrainage;
+	public static TextField txtds1;
+	public static TextField txtds2;
+	public static TextField txtds3;
+	public static TextField txtdn1;
+	public static TextField txtdn2;
+	
+	public static Label lblGypsum;
+	public static TextField txtgs1;
+	public static TextField txtgs2;
+	public static TextField txtgs3;
+	public static TextField txtgn1;
+	public static TextField txtgn2;
+	
+	public static Label lblCalcium;
+	public static TextField txtcs1;
+	public static TextField txtcs2;
+	public static TextField txtcs3;
+	public static TextField txtcn1;
+	public static TextField txtcn2;
+	
+	public static Button btnSave;
+	public static Button btnCancel;
+	private Connection con;
+	private Statement st;
+	public static Font ft;
+	BufferedImage bi;
+	
+	public static void main(String[] args) throws SQLException
+	{
+		// TODO Auto-generated method stub
+       cr = new CropInfo();
+       cr.show();
+	}
+	
+	public CropInfo() throws SQLException     //constructor
+	{
+		setTitle("Crop Entry Screen");
+		
+		try {
+			bi=ImageIO.read(new File("D:\\crop4.jpeg"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		setSize(600,380);
+		
+		setLayout(null);
+		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
+				dispose();
+				setVisible(false);
+			}
+			
+		});
+		lblCrop = new Label("Crop");
+		add(lblCrop);
+		lblCrop.setBounds(50, 50, 55, 30);
+		lblCrop.setBackground(Color.orange);
+		ft = new Font("Arial",Font.CENTER_BASELINE,20);
+		lblCrop.setFont(ft);
+		txtCrop = new TextField("");
+		add(txtCrop);
+		txtCrop.setBounds(140, 50, 100, 30);
+		
+		
+		lblS1 = new Label("S1");
+		add(lblS1);
+		lblS1.setBounds(146, 110, 20, 20);
+		lblS1.setBackground(Color.ORANGE);
+		lblS2 = new Label("S2");
+		add(lblS2);
+		lblS2.setBounds(216, 110, 20, 20);
+		lblS2.setBackground(Color.ORANGE);
+		lblS3 = new Label("S3");
+		add(lblS3);
+		lblS3.setBounds(286, 110, 20, 20);
+		lblS3.setBackground(Color.ORANGE);
+		lblN1 = new Label("N1");
+		add(lblN1);
+		lblN1.setBounds(356, 110, 20, 20);
+		lblN1.setBackground(Color.ORANGE);
+		lblN2 = new Label("N2");
+		add(lblN2);
+		lblN2.setBounds(426, 110, 20, 20);	
+		lblN2.setBackground(Color.ORANGE);
+		lblSlope = new Label("Slope");
+		add(lblSlope);
+		lblSlope.setBounds(60, 130, 60, 20);
+		lblSlope.setBackground(Color.YELLOW);
+		txtss1 = new TextField("");
+		add(txtss1);
+		txtss1.setBounds(130, 130, 50, 20);
+		txtss2 = new TextField("");
+		add(txtss2);
+		txtss2.setBounds(200, 130, 50, 20);
+		txtss3 = new TextField("");
+		add(txtss3);
+		txtss3.setBounds(270, 130, 50, 20);
+		txtsn1 = new TextField("");
+		add(txtsn1);
+		txtsn1.setBounds(340, 130, 50, 20);
+		txtsn2 = new TextField("");
+		add(txtsn2);
+		txtsn2.setBounds(410, 130, 50, 20);
+		
+		lblFlood = new Label("Flood");
+		add(lblFlood);
+		lblFlood .setBounds(60, 170, 60, 20);
+		lblFlood.setBackground(Color.YELLOW);
+		txtfs1 = new TextField("");
+		add(txtfs1);
+		txtfs1.setBounds(130, 170, 50, 20);
+		txtfs2 = new TextField("");
+		add(txtfs2);
+		txtfs2.setBounds(200, 170, 50, 20);
+		txtfs3 = new TextField("");
+		add(txtfs3);
+		txtfs3.setBounds(270, 170, 50, 20);
+		txtfn1 = new TextField("");
+		add(txtfn1);
+		txtfn1.setBounds(340, 170, 50, 20);
+		txtfn2 = new TextField("");
+		add(txtfn2);
+		txtfn2.setBounds(410, 170, 50, 20);
+		
+		lblDrainage = new Label("Drainage");
+		add(lblDrainage);
+		lblDrainage .setBounds(60, 210, 60, 20);
+		lblDrainage.setBackground(Color.YELLOW);
+		txtds1 = new TextField("");
+		add(txtds1);
+		txtds1.setBounds(130, 210, 50, 20);
+		txtds2 = new TextField("");
+		add(txtds2);
+		txtds2.setBounds(200, 210, 50, 20);
+		txtds3 = new TextField("");
+		add(txtds3);
+		txtds3.setBounds(270, 210, 50, 20);
+		txtdn1 = new TextField("");
+		add(txtdn1);
+		txtdn1.setBounds(340, 210, 50, 20);
+		txtdn2 = new TextField("");
+		add(txtdn2);
+		txtdn2.setBounds(410, 210, 50, 20);
+		
+		lblGypsum = new Label("Gypsum");
+		add(lblGypsum);
+		lblGypsum .setBounds(60, 250, 60, 20);
+		lblGypsum.setBackground(Color.YELLOW);
+		txtgs1 = new TextField("");
+		add(txtgs1);
+		txtgs1.setBounds(130, 250, 50, 20);
+		txtgs2 = new TextField("");
+		add(txtgs2);
+		txtgs2.setBounds(200, 250, 50, 20);
+		txtgs3 = new TextField("");
+		add(txtgs3);
+		txtgs3.setBounds(270, 250, 50, 20);
+		txtgn1 = new TextField("");
+		add(txtgn1);
+		txtgn1.setBounds(340, 250, 50, 20);
+		txtgn2 = new TextField("");
+		add(txtgn2);
+		txtgn2.setBounds(410, 250, 50, 20);
+		
+		lblCalcium = new Label("Calcium");
+		add(lblCalcium);
+		lblCalcium .setBounds(60, 290, 60, 20);
+		lblCalcium.setBackground(Color.YELLOW);
+		txtcs1 = new TextField("");
+		add(txtcs1);
+		txtcs1.setBounds(130, 290, 50, 20);
+		txtcs2 = new TextField("");
+		add(txtcs2);
+		txtcs2.setBounds(200, 290, 50, 20);
+		txtcs3 = new TextField("");
+		add(txtcs3);
+		txtcs3.setBounds(270, 290, 50, 20);
+		txtcn1 = new TextField("");
+		add(txtcn1);
+		txtcn1.setBounds(340, 290, 50, 20);
+		txtcn2 = new TextField("");
+		add(txtcn2);
+		txtcn2.setBounds(410, 290, 50, 20);
+		
+		btnSave = new Button ("Save");
+		btnSave.setBounds(270, 320, 80, 30);
+		btnCancel = new Button ("Cancel");
+		btnCancel.setBounds(370, 320, 90, 30);
+		btnCancel.addActionListener(this);
+		btnSave.addActionListener(this);
+		add(btnSave);
+		add(btnCancel);
+        
+		
+		
+	}  
+    public void paint(Graphics g)
+    {
+    	super.paint(g);
+    	g.drawImage(bi,0, 0,getWidth(), getHeight(), null);
+    }
+    public void actionPerformed(ActionEvent e)
+    {
+			 if(e.getSource()==btnCancel)
+			 {
+				 dispose();
+				 try
+				 {
+					 con.close();
+				 }
+				 catch(SQLException eee)
+				 {
+					 
+				 }
+				 setVisible(false);
+			 }
+			 if(e.getSource()==btnSave)
+			 {
+				 
+				
+				 String crname;
+				 int sss1,sss2,sss3,ssn1,ssn2,fss1,fss2,fss3,fsn1,fsn2,dss1,dss2,dss3,dsn1,dsn2,gss1,gss2,gss3,gsn1,gsn2,css1,css2,css3,csn1,csn2;
+			     
+				 crname = txtCrop.getText();
+				 
+				 sss1=Integer.parseInt(txtss1.getText());				 
+				 sss2=Integer.parseInt(txtss2.getText());
+				 sss3=Integer.parseInt(txtss3.getText());
+				 ssn1=Integer.parseInt(txtsn1.getText());
+				 ssn2=Integer.parseInt(txtsn2.getText());
+				 
+				 fss1=Integer.parseInt(txtfs1.getText());
+				 fss2=Integer.parseInt(txtfs2.getText());
+				 fss3=Integer.parseInt(txtfs3.getText());
+				 fsn1=Integer.parseInt(txtfn1.getText());
+				 fsn2=Integer.parseInt(txtfn2.getText());
+				 
+				 dss1=Integer.parseInt(txtds1.getText());
+				 dss2=Integer.parseInt(txtds2.getText());
+				 dss3=Integer.parseInt(txtds3.getText());
+				 dsn1=Integer.parseInt(txtdn1.getText());
+				 dsn2=Integer.parseInt(txtdn2.getText());
+				 
+				 gss1=Integer.parseInt(txtgs1.getText());
+				 gss2=Integer.parseInt(txtgs2.getText());
+				 gss3=Integer.parseInt(txtgs3.getText());
+				 gsn1=Integer.parseInt(txtgn1.getText());
+				 gsn2=Integer.parseInt(txtgn2.getText());
+			
+				 css1=Integer.parseInt(txtcs1.getText());
+				 css2=Integer.parseInt(txtcs2.getText());
+				 css3=Integer.parseInt(txtcs3.getText());
+				 csn1=Integer.parseInt(txtcn1.getText());
+				 csn2=Integer.parseInt(txtcn2.getText());
+			
+				 
+				 //connection
+				 Connection conn = null;
+			     Statement st = null;
+			     ResultSet res;   
+					try 
+					{			
+						Class.forName("oracle.jdbc.driver.OracleDriver");
+						conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:Aditya", "hr", "1111");
+						
+						System.out.println("Connection Established successfully");
+					} 
+					catch (Exception ee) 
+					{
+						System.out.println("Connection could  not be established");
+						if (conn != null)
+							try {
+								conn.close();
+							} catch (SQLException e1) {
+							
+								e1.printStackTrace();
+							}
+					} 
+				 
+				 try 
+				 {
+					 
+					String sql="Insert into crop2 values('"+crname+"',"+sss1+","+sss2+","+sss3+","+ssn1+","+ssn2+","+fss1+","+fss2+","+fss3+","+fsn1+","+fsn2+","+dss1+","+dss2+","+dss3+","+dsn1+","+dsn2+","+gss1+","+gss2+","+gss3+","+gsn1+","+gsn2+","+css1+","+css2+","+css3+","+csn1+","+csn2+")";
+				
+					st = conn.createStatement();
+					 st.executeUpdate(sql);
+						System.out.println("Success");
+						if (st != null) 
+							st.close();		
+						if (conn != null) 
+							conn.close();
+							
+				 }		
+				catch(SQLException ee)
+			    {
+						 
+			    }
+				 
+				 txtCrop.setText("");
+				 txtss1.setText("");
+				 txtss2.setText("");
+				 txtss3.setText("");
+				 txtsn1.setText("");
+				 txtsn2.setText("");
+				 
+				 txtfs1.setText("");
+				 txtfs2.setText("");
+				 txtfs3.setText("");
+				 txtfn1.setText("");
+				 txtfn2.setText("");
+				 
+				 txtds1.setText("");
+				 txtds2.setText("");
+				 txtds3.setText("");
+				 txtdn1.setText("");
+				 txtdn2.setText("");
+				 
+				 txtgs1.setText("");
+				 txtgs2.setText("");
+				 txtgs3.setText("");
+				 txtgn1.setText("");
+				 txtgn2.setText("");
+				 
+				 txtcs1.setText("");
+				 txtcs2.setText("");
+				 txtcs3.setText("");
+				 txtcn1.setText("");
+				 txtcn2.setText("");
+			 }
+		 }
+	   
+	}
+
+
+                            
+
+
+
+
