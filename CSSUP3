@@ -1,0 +1,189 @@
+#IdPass
+
+package myproject;
+
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Label;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
+
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+
+public class IdPass extends Frame implements ActionListener
+{
+	public BufferedImage bi;
+	public static Label lblHeading;
+	public static Label Username;
+	public static Label Password;
+	public static TextField txtUser;
+	public static TextField txtPwd;
+	public static Button btn;
+	public static Font ft;
+	public static Font ft1;
+	public IdPass()
+	{
+		setTitle("Authentication");
+		try {
+			bi=ImageIO.read(new File("D:\\crop3.jpeg"));
+		} catch (IOException e1) {
+		
+			e1.printStackTrace();
+		}
+		setSize(600,380);
+		
+		setLayout(null);
+		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
+				dispose();
+				setVisible(false);
+			}
+			
+		});
+		ft = new Font("Arial",Font.CENTER_BASELINE,15);
+		ft1 = new Font("Times New Roman",Font.BOLD,20);
+		lblHeading = new Label("Enter Credentials to Login");
+		lblHeading.setFont(ft1);
+		lblHeading.setBackground(Color.PINK);
+		lblHeading.setBounds(170,80,250,25);
+		add(lblHeading);
+		Username = new Label("Username");
+		Username.setBounds(180,150,75,20);
+		Username.setFont(ft);
+		Username.setBackground(Color.CYAN);
+		add(Username);
+		
+		txtUser = new TextField();
+		txtUser.setBounds(290, 150, 120, 20);
+		add(txtUser);
+		
+		Password = new Label("Password");
+		Password.setBounds(180,190,75,20);
+		Password.setFont(ft);
+		Password.setBackground(Color.CYAN);
+		add(Password);
+		
+		txtPwd = new TextField();
+		txtPwd.setEchoChar('*');
+		txtPwd.setBounds(290, 190, 120, 20);
+		add(txtPwd);
+		
+		btn = new Button("Login");
+		btn.setBounds(250, 230, 70, 20);
+		add(btn);
+		btn.addActionListener(this);
+		
+		
+	}
+
+	public static void main(String[] args) {
+		
+		
+		IdPass ip = new IdPass();
+		ip.show();
+
+	}
+
+	
+	public void paint(Graphics g)
+    {
+    	super.paint(g);
+    	g.drawImage(bi,0, 0,getWidth(), getHeight(), null);
+    }
+	
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource()==btn)
+		{
+			if(txtUser.getText().isEmpty()|| txtPwd.getText().isEmpty())
+			{
+			    JOptionPane.showMessageDialog(null, "Username and Password can't be Empty ");
+			    
+			}
+			else
+				{
+					String name = txtUser.getText();				
+					String pwd =txtPwd.getText();
+				
+					Connection conn =null;
+					Statement st;
+					ResultSet res;
+					
+					try 
+					{			
+						Class.forName("oracle.jdbc.driver.OracleDriver");
+						conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost", "hr", "");
+						
+						System.out.println("Connection Established successfully");
+					} 
+					catch (Exception ee) 
+					{
+						System.out.println("Connection could  not be established");
+						if (conn != null)
+							try {
+								conn.close();
+							} catch (SQLException e1) {
+								
+								e1.printStackTrace();
+							}
+					} 
+					
+					
+					try {
+						String sql = "SELECT name,pwd FROM login";
+						st = conn.createStatement();
+						res = st.executeQuery(sql);
+						
+						int flag=0;
+						while(res.next())
+						{
+							
+							String dname = res.getString("name");
+							String dpwd = res.getString("pwd");	
+							
+							
+							if(dname.equals(name) && dpwd.equals(pwd))
+							{
+								flag=1;
+									CropInfo cr = null;
+									try {
+										cr = new CropInfo();
+									} catch (SQLException e1) {
+										
+										e1.printStackTrace();
+									}
+									cr.show();					
+							}
+						}
+						if(flag==0)
+						{
+							JOptionPane.showMessageDialog(null, "Invalid Username or Password");
+						}
+					} catch (SQLException e2) {
+						
+						e2.printStackTrace();
+					}
+					
+					
+					
+					
+				}
+		}
+		
+	}
+
+}
