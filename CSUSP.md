@@ -22,8 +22,6 @@ import javax.imageio.ImageIO;
 
 
 public class FrontScreen extends Frame implements ActionListener {
- 
-	
 	BufferedImage bi;
 	public static Label data;
 	public static Label farmer;
